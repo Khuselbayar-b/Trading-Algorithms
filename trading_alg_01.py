@@ -63,7 +63,6 @@ stock_data = calculate_moving_average(stock_data, 365)
 stock_data = apply_trading_strategy(stock_data)
 portfolio = backtest_strategy(stock_data, 1000)
 
-
 fig, (ax1, ax2, ax3) = plt.subplots(3, 1, sharex=True, figsize=(14, 8))
 
 ax1.plot(stock_data['Close'], label='Close Price')
@@ -78,41 +77,3 @@ ax2.set_ylabel('Portfolio Value')
 ax2.legend()
 
 plt.show()
-
-'''
-def backtest_strategy(data, initial_capital=10000):
-    positions = pd.DataFrame(index=data.index).fillna(0.0)
-    positions['Stock'] = data['Signal']  # Long positions only
-
-    # Calculate the portfolio value
-    portfolio = positions.multiply(data['Close'], axis=0)
-    pos_diff = positions.diff()
-
-    # Add 'holdings' to portfolio
-    portfolio['holdings'] = (positions.multiply(
-        data['Close'], axis=0)).sum(axis=1)
-
-    # Add 'cash' to portfolio
-    portfolio['cash'] = initial_capital - \
-        (pos_diff.multiply(data['Close'], axis=0)).sum(axis=1).cumsum()
-
-    # Add 'total' to portfolio
-    portfolio['total'] = portfolio['cash'] + portfolio['holdings']
-
-    return portfolio
-
-
-def plot_performance(data, portfolio):
-    fig, (ax1, ax2) = plt.subplots(2, 1, sharex=True, figsize=(14, 8))
-
-    ax1.plot(data['Close'], label='Close Price')
-    ax1.plot(data['20_day_MA'], label='20-day Moving Average')
-    ax1.set_ylabel('Price')
-    ax1.legend()
-
-    ax2.plot(portfolio['total'], label='Portfolio Value')
-    ax2.set_ylabel('Portfolio Value')
-    ax2.legend()
-
-    plt.show()
-'''
